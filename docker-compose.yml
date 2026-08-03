@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: reviews
+      POSTGRES_USER: reviews
+      POSTGRES_PASSWORD: reviews
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U reviews -d reviews"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      REW_DATABASE_URL: postgresql+psycopg://reviews:reviews@db:5432/reviews
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

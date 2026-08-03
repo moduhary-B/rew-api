@@ -1,0 +1,4 @@
+# Run every day at 03:15 server time. The runner processes sources sequentially
+# and waits a random configured delay between them.
+15 3 * * * cd /opt/rew-api && /usr/bin/docker compose run --rm api rew-api sync-due >> /var/log/rew-api-sync.log 2>&1
+
