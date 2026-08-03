@@ -40,3 +40,9 @@ pythonpath = ["src"]
 [tool.ruff]
 target-version = "py312"
 line-length = 100
+
+[tool.ruff.lint]
+# Keep CI deterministic across Ruff releases. Framework-specific style rules
+# (for example calls to FastAPI Depends in defaults) are intentionally not part
+# of the correctness check.
+select = ["E4", "E7", "E9", "F"]
